@@ -184,7 +184,7 @@ button{
     margin: 5rem auto;
 }
 
-label, input{
+div>label, div>input{
     display:block;
     width: 70%;
     text-align: left;
@@ -199,4 +199,19 @@ form>*{
 
 .logo>h2{
     cursor: pointer;
+}
+
+.login-redirect{
+    color: #8766a1;
+    margin-left: .5rem;
+}
+.search-bar{
+    max-width: 50%;
+    margin: 2rem 2rem 2rem 3rem ;
+    text-align: left;
+}
+.search-bar>*{
+    display: initial;
+    margin: 0;
+    
 }
