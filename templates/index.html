@@ -1,4 +1,9 @@
-{% extends 'layout.html' %} {% block main %}
+{% extends 'layout.html' %} 
+
+{% block heading %}
+Home
+{% endblock heading %}
+{% block main %}
 <div class="home-display">
   <div class="home-img">
     <div class="home-text">
@@ -7,10 +12,18 @@
       <a href="/"><button>Get Started for Free!</button></a>
     </div>
   </div>
-  <div class="home-events">
+  <div class="upcoming-section">
     <h1>Upcoming Events</h1>
-    {% for event in events %}
-    
+    <div class="home-events-container">
+    {% for event in all_events %}
+        <div class="home-events container" onclick="location.href='/upcoming_event_detail'">
+        <h3>{{event.name}}</h3>
+        <p>{{event.date}}</p>
+        <p>{{event.location}}</p>
+        <!-- <p>{{event.description}}</p> -->
+      </div>
+    {% endfor %}
+    </div>
   </div>
 </div>
 {% endblock main %}

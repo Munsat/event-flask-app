@@ -1,0 +1,24 @@
+{% extends 'layout.html' %}
+
+{% block heading %} 
+Upcoming Events
+{% endblock heading %}
+
+{% block main %}
+<div class="upcoming-events-container">
+    {% for event in all_events %}
+        <div class="upcoming-events container" onclick="location.href='/upcoming_event_detail'">
+        <div>
+            <h3>{{event.name}}</h3>
+            <p>{{event.date}}</p>
+            <p>{{event.location}}</p>
+        </div>
+        <!-- <p>{{event.description}}</p> -->
+        <div>
+            <a href="/signup"><button>Attend</button></a>
+            <a href="/event_details"><button>See Event Details</button></a>
+        </div>  
+      </div>
+    {% endfor %}
+    </div>
+{% endblock main %}

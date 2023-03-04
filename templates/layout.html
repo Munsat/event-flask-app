@@ -5,25 +5,32 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/css/styles.css">
+    <script src="/static/js/script.js" defer></script>
     <title>Eevent -{% block heading %} {% endblock heading %}</title>
 </head>
 <body>
     <header>
         <div class="logo">
-            <h2>EEvent</h2>
+            <h2 onclick="location.href='/'">EEvent</h2>
         </div>
         <nav>
             <ul class="primary-nav">
                 <li><a class='nav-bar' href="/">home</a></li>
-                <li><a class='nav-bar' href="/">upcoming events</a></li>
-                <li><a class='nav-bar' href="/">create account</a></li>
-                <li><a class='nav-bar' href="/">login</a></li>
+                <li><a class='nav-bar' href="/upcoming_events">upcoming events</a></li>
+                {% if user_name != 'UNKNOWN': %}
+                <li><a class='nav-bar' href="/">create event</a></li>
+                <li><a class='nav-bar' href="/">my account</a></li>
+                <li><a class='nav-bar' href="/logout">logout</a></li>
+                {% else: %}
+                <li><a class='nav-bar' href="/signup">create account</a></li>
+                <li><a class='nav-bar' href="/login">login</a></li>
+                {% endif %}
             </ul>
         </nav>
     </header>
     <main>
         {% block main %}
-        
+
         {% endblock main %}
     </main>
 </body>

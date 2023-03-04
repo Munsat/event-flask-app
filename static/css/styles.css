@@ -95,10 +95,17 @@ header{
 
 .home-display{
     display: grid;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: 1fr min-content;
     gap: 2rem;
    
 }
+
+.container{
+    background-color: #291f31;
+    color: white;
+    border-radius: 20px;
+}
+
 
 .home-img{
     background-image: url("https://images.unsplash.com/photo-1492684223066-81342ee5ff30?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80");
@@ -109,7 +116,6 @@ header{
 }
 
 .home-text{
-    
     max-width: 80%;
     background-color: rgba(0, 0, 0, 70%);
     padding: 4rem;
@@ -123,4 +129,74 @@ header{
     color: #ffffff;
     font-size: 56px;
     font-weight: 500;
+}
+
+.home-events{
+    margin: 1rem auto;
+    width: 32%;
+    height: 10rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 250ms ease-in-out;
+}
+
+.home-events:hover{
+    background-color: #291f31c8;
+}
+
+.home-events-container{
+    display: flex;
+    margin: 0 1rem;
+}
+
+.upcoming-events-container{
+    margin: 0 1rem;
+}
+
+.upcoming-events{
+    margin: 1rem 3rem;
+    padding: 3rem;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    place-items: center;
+}
+
+button:hover{
+    background-color: #361452c8;
+    color: #ffffff;
+}
+
+button{
+    padding: .8rem 1.5rem;
+    border-radius: 12px;
+    border: none;
+    background-color: #8766a1;
+    cursor: pointer;
+    transition: all 250ms ease-in-out;
+}
+
+.form{
+    padding: 3rem 1rem ;
+    max-width: 45%;
+    margin: 5rem auto;
+}
+
+label, input{
+    display:block;
+    width: 70%;
+    text-align: left;
+    margin: auto;
+}
+
+
+form>*{
+    margin-top: 1.5rem;
+   
+}
+
+.logo>h2{
+    cursor: pointer;
 }
