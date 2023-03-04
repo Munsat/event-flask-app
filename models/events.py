@@ -11,7 +11,7 @@ class Event:
 
 
 def get_all_events():
-    events =  sql_select_all("SELECT id, name, type, description, location, date FROM events WHERE date>NOW() AND type = 'Public' ")
+    events =  sql_select_all("SELECT id, name, type, description, location, date FROM events WHERE date>NOW() AND type = 'Public' ORDER BY date ASC")
     all_events = []
     for event in events:
         all_events.append(Event(id=event['id'],

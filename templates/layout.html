@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
     <script src="/static/js/script.js" defer></script>
     <title>Eevent -{% block heading %} {% endblock heading %}</title>
 </head>
@@ -19,7 +20,16 @@
                 <li><a class='nav-bar' href="/upcoming_events">upcoming events</a></li>
                 {% if user_name != 'UNKNOWN': %}
                 <li><a class='nav-bar' href="/">create event</a></li>
-                <li><a class='nav-bar' href="/">my account</a></li>
+                <div class="dropdown">
+                    <button class='nav-bar drop-btn'>my account
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    
+                    <div class="dropdown-content">
+                        <a href="/">My Events</a>
+                        <a href="/">Attending Events</a>
+                    </div>
+                </div>
                 <li><a class='nav-bar' href="/logout">logout</a></li>
                 {% else: %}
                 <li><a class='nav-bar' href="/signup">create account</a></li>

@@ -84,9 +84,14 @@ header{
 }
 
 .nav-bar{
-    padding: 0 1rem;
+    padding: 1rem;
     font-family: 'Major Mono Display', monospace;
-    color: black;
+    color: rgb(0, 0, 0);
+}
+.nav-bar:hover {
+    background-color: #8766a1;
+    color: white;
+    
 }
 
 .logo{
@@ -205,6 +210,8 @@ form>*{
     color: #8766a1;
     margin-left: .5rem;
 }
+
+/* Search Bar */
 .search-bar{
     max-width: 50%;
     margin: 2rem 2rem 2rem 3rem ;
@@ -215,3 +222,39 @@ form>*{
     margin: 0;
     
 }
+
+/* Dropdown Feature */
+.dropdown{
+    float:left;
+    overflow: hidden;
+    
+}
+
+.drop-btn, .drop-btn:hover{
+    background-color: white;
+    color: black;
+    padding-top: 0;
+}
+
+.dropdown-content{
+    display: none;
+    position: absolute;
+    min-width: 7rem;
+    background-color: #8766a15a;
+}
+
+.dropdown-content a{
+    display: block;
+    padding: 0.3rem 0.5rem;
+    text-align: left;
+    color: #ffffff;
+}
+
+.dropdown-content a:hover, .drop-btn:hover{
+    background-color: #8766a1;
+}
+
+.dropdown:hover .dropdown-content{
+    display: block;
+}
+
