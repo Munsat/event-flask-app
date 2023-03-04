@@ -1,2 +1,16 @@
-{% extends 'layout.html' %}
-
+{% extends 'layout.html' %} {% block main %}
+<div class="home-display">
+  <div class="home-img">
+    <div class="home-text">
+      <!-- <h1>YOUR ONE STOP SOLUTION TO EVENT PLANNING</h1> -->
+      <h1>Your One Stop Solution to Events Planning</h1>
+      <a href="/"><button>Get Started for Free!</button></a>
+    </div>
+  </div>
+  <div class="home-events">
+    <h1>Upcoming Events</h1>
+    {% for event in events %}
+    
+  </div>
+</div>
+{% endblock main %}

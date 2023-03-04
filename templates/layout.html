@@ -4,21 +4,26 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Name -{% block heading %} {% endblock heading %}</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <title>Eevent -{% block heading %} {% endblock heading %}</title>
 </head>
 <body>
     <header>
+        <div class="logo">
+            <h2>EEvent</h2>
+        </div>
         <nav>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/">Upcoming Events</a></li>
-                <li><a href="/">Create Account</a></li>
-                <li><a href="/">Login</a></li>
+            <ul class="primary-nav">
+                <li><a class='nav-bar' href="/">home</a></li>
+                <li><a class='nav-bar' href="/">upcoming events</a></li>
+                <li><a class='nav-bar' href="/">create account</a></li>
+                <li><a class='nav-bar' href="/">login</a></li>
             </ul>
         </nav>
     </header>
     <main>
         {% block main %}
+        
         {% endblock main %}
     </main>
 </body>
