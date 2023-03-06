@@ -5,24 +5,63 @@ Upcoming Events
 {% endblock heading %}
 
 {% block main %}
+
 <div class="upcoming-events-container">
-        <div class="search-bar">
-            <label>Search:</label>
-            <input class="search-input" type="text" placeholder="Look up an event..." onkeyup="searchFunc()">
-        </div>
-    {% for event in all_events %}
-        <div class="upcoming-events container" onclick="location.href='/upcoming_event_detail'">
-        <div>
-            <h3 class="event-name">{{event.name}}</h3>
-            <p>{{event.date}}</p>
-            <p>{{event.location}}</p>
-        </div>
-        <!-- <p>{{event.description}}</p> -->
-        <div>
-            <a href="/signup"><button>Attend</button></a>
-            <a href="/event_details"><button>See Event Details</button></a>
-        </div>  
-      </div>
-    {% endfor %}
+    <div class="search-bar">
+        <label>Search:</label>
+        <input class="search-input" type="text" placeholder="Look up an event..." onkeyup="searchFunc()">
     </div>
+{% if show_attendance %}
+{% for event in all_events %}
+{% for attendance in all_attendances if all_attendances|length>0 %}
+        {% if attendance.event_id == event.id %}
+    <div class="upcoming-events container">
+    <div>
+        <h3 class="event-name">{{event.name}}</h3>
+        <p>{{event.date}}</p>
+        <p>{{event.location}}</p>
+    </div>
+    <!-- <p>{{event.description}}</p> -->
+    <div>
+        <a href="/event_details"><button>See Event Details</button></a>
+        <a href="/cancel_attendance?id={{event.id}}"><button>Cancel Attendance</button></a>
+    </div>  
+  </div>
+{% endif %}
+{% endfor %}
+{% endfor %}
+{% else %}    
+{% for event in all_events %}
+{% set ns = namespace(is_attending =False) %}
+    <div class="upcoming-events container">
+    <div>
+        <h3 class="event-name">{{event.name}}</h3>
+        <p>{{event.date}}</p>
+        <p>{{event.location}}</p>
+    </div>
+    <!-- <p>{{event.description}}</p> -->
+    <div>
+        {% if user_name == 'UNKNOWN': %}
+        <a href="/signup"><button>Attend</button></a>
+        {% else %}
+        {% for attendance in all_attendances if all_attendances|length>0 %}
+        {% if attendance.event_id == event.id %}
+        {% set ns.is_attending=True %}
+        {% endif %}
+        {% endfor %}
+        {% if ns.is_attending == True %}
+        <button disabled>Attending</button>
+        {% else %}
+        <a href="/attend_event_action?id={{event.id}}"><button>Attend</button></a>
+        {% endif %}            
+        {% endif %}
+        
+        <a href="/event_details"><button>See Event Details</button></a>
+    </div>  
+  </div>
+{% endfor %}
+{% endif %}
+</div>
+
+
 {% endblock main %}

@@ -19,15 +19,25 @@
                 <li><a class='nav-bar' href="/">home</a></li>
                 <li><a class='nav-bar' href="/upcoming_events">upcoming events</a></li>
                 {% if user_name != 'UNKNOWN': %}
-                <li><a class='nav-bar' href="/">create event</a></li>
                 <div class="dropdown">
-                    <button class='nav-bar drop-btn'>my account
+                    <a class='nav-bar'>create event
                         <i class="fa fa-caret-down"></i>
-                    </button>
+                    </a>
                     
                     <div class="dropdown-content">
-                        <a href="/">My Events</a>
-                        <a href="/">Attending Events</a>
+                        <a class="create-event" href="/">Public Event</a>
+                        <a class="create-event" href="/">Private Event</a>
+                    </div>
+                </div>
+                <!-- <li><a class='nav-bar' href="/">create event</a></li> -->
+                <div class="dropdown">
+                    <a class='nav-bar'>my account
+                        <i class="fa fa-caret-down"></i>
+                    </a>
+                    
+                    <div class="dropdown-content">
+                        <a class="my-acc" href="/my_events">My Events</a>
+                        <a class="my-acc" href="/attending_events">Attending Events</a>
                     </div>
                 </div>
                 <li><a class='nav-bar' href="/logout">logout</a></li>

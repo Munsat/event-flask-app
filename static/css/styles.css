@@ -87,6 +87,7 @@ header{
     padding: 1rem;
     font-family: 'Major Mono Display', monospace;
     color: rgb(0, 0, 0);
+    transition: all 250ms ease-in-out;
 }
 .nav-bar:hover {
     background-color: #8766a1;
@@ -112,8 +113,16 @@ header{
 }
 
 
-.home-img{
+.home-img-logged-out{
     background-image: url("https://images.unsplash.com/photo-1492684223066-81342ee5ff30?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80");
+    background-color: #0e0e0e;
+    min-height: 35rem;
+    display: flex;
+    align-items: center;
+}
+
+.home-img-logged-in{
+    background-image: url("https://images.unsplash.com/photo-1568732626545-b9208b767347?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1464&q=80");
     background-color: #0e0e0e;
     min-height: 35rem;
     display: flex;
@@ -134,6 +143,12 @@ header{
     color: #ffffff;
     font-size: 56px;
     font-weight: 500;
+}
+
+.home-btn-container{
+    display: flex;
+    gap: 2rem;
+    margin: 2rem;
 }
 
 .home-events{
@@ -169,9 +184,14 @@ header{
     place-items: center;
 }
 
-button:hover{
+button:hover:not([disabled]){
     background-color: #361452c8;
     color: #ffffff;
+}
+
+button:disabled {
+    background-color: #688607c8;
+    color: #3d3d3d;
 }
 
 button{
@@ -224,34 +244,33 @@ form>*{
 }
 
 /* Dropdown Feature */
-.dropdown{
-    float:left;
-    overflow: hidden;
-    
-}
 
-.drop-btn, .drop-btn:hover{
-    background-color: white;
-    color: black;
-    padding-top: 0;
-}
 
 .dropdown-content{
     display: none;
     position: absolute;
     min-width: 7rem;
-    background-color: #8766a15a;
+    margin-top: 0.5rem;
+    background-color: #8766a19d;
 }
 
 .dropdown-content a{
     display: block;
-    padding: 0.3rem 0.5rem;
-    text-align: left;
     color: #ffffff;
+    text-align: left;
+    transition: all 250ms ease-in-out;
 }
 
-.dropdown-content a:hover, .drop-btn:hover{
-    background-color: #8766a1;
+.my-acc{
+    padding: 0.3rem .93rem;
+}
+
+.create-event{
+    padding: 0.3rem 2.72rem;
+}
+
+.dropdown-content a:hover{
+    background-color: #5a3874;
 }
 
 .dropdown:hover .dropdown-content{

@@ -5,13 +5,27 @@ Home
 {% endblock heading %}
 {% block main %}
 <div class="home-display">
-  <div class="home-img">
+    {% if user_name == 'UNKNOWN' %}
+  <div class="home-img-logged-out">
     <div class="home-text">
       <!-- <h1>YOUR ONE STOP SOLUTION TO EVENT PLANNING</h1> -->
       <h1>Your One Stop Solution to Events Planning</h1>
       <a href="/signup"><button>Get Started for Free!</button></a>
     </div>
   </div>
+  {% else %}
+  <div class="home-img-logged-in">
+    <div class="home-text">
+      <h1>Let's Make Something Happen!</h1>
+      <div class="home-btn-container">
+        <a href="/"><button>Create a Public Event</button></a>
+        <a href="/"><button>Create a Private Event</button></a>
+      </div>
+      
+    </div>
+  </div>
+  
+  {% endif %}
   <div class="upcoming-section">
     <h1>Upcoming Events</h1>
     <div class="home-events-container">
