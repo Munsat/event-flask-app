@@ -1,0 +1,43 @@
+{% extends 'layout.html' %}
+
+{% block heading %} 
+Create Event
+{% endblock heading %}
+
+{% block main %}
+<div class="form container">
+    <h2>Create a Public Event Form</h2>
+    <form action="" method="POST">
+        <div>
+            <label for="event-name">Event Name: </label>
+            <input id="event-name" type="text" name="name">
+        </div>
+        <div>
+            <label for="description">Desciption: </label>
+            <textarea id="description" name="description" rows="4" cols="45"></textarea>
+        </div>
+        <div>
+            <label for="location">Location of the venue: </label>
+            <input id="location" type="text" name="location">
+        </div>
+        <div>
+            <label for="date">Date and Time: </label>
+            <input id="date" type="date" name="date">
+        </div>
+        <div class="time-container">
+            <div>
+                <label for="start-time">Start Time: </label>
+                <input id="start-time" type="time" name="start-time">
+            </div>
+            <div>
+                <label for="end-time">End Time: </label>
+                <input id="end-time" type="time" name="end-time">
+            </div>
+            
+        </div>
+            
+        
+        <button type="submit">Submit</button>
+    </form>
+</div>
+{% endblock main %}

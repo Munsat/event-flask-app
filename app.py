@@ -116,6 +116,16 @@ def cancel_attendance():
     return redirect('/upcoming_events')
     
 
+@app.route('/create_public_event')
+def create_public_event():
+    return render_template('create_event.html')
+
+
+@app.route('/create_private_event')
+def create_private_event():
+    pass
+
+
 @app.route('/event_details')
 def event_details():
     pass

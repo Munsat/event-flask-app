@@ -1,11 +1,16 @@
 {% extends 'layout.html' %}
 
 {% block heading %} 
+{% if show_attendance %}
+My Upcoming Events
+{% else %}
 Upcoming Events
+{% endif %}
 {% endblock heading %}
 
-{% block main %}
 
+
+{% block main %}
 <div class="upcoming-events-container">
     <div class="search-bar">
         <label>Search:</label>

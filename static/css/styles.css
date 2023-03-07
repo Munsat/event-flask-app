@@ -207,18 +207,27 @@ button{
     padding: 3rem 1rem ;
     max-width: 45%;
     margin: 5rem auto;
+    
 }
 
-div>label, div>input{
+.form div{
+    max-width: 30rem;
+}
+
+div>label, div>input, div>textarea{
     display:block;
-    width: 70%;
+    width: 100%;
     text-align: left;
-    margin: auto;
+}
+
+.time-container{
+    display: grid;
+    grid-template-columns: 50% 50%;
 }
 
 
 form>*{
-    margin-top: 1.5rem;
+    margin: 1.5rem auto;
    
 }
 
