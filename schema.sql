@@ -19,6 +19,9 @@ CREATE TABLE events (
     description TEXT,
     location TEXT,
     date DATE,
+    start_time TIME,
+    end_time TIME,
+    email_list TEXT ARRAY,
     user_id INT,
     CONSTRAINT fk_events_users
     FOREIGN KEY (user_id)

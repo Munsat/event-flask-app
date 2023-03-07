@@ -1,4 +1,4 @@
-from database import sql_select_all
+from database import sql_select_all,sql_write
 
 class Event:
     def __init__(self,id, name, type,description, location, date ) -> None:
@@ -23,4 +23,5 @@ def get_all_events():
     return all_events
 
     
-    
+def insert_event(name, type, description, location, date, start_time, end_time, user_id):
+    return sql_write("INSERT INTO events (name, type, description, location, date, start_time, end_time, user_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", [name, type, description,location, date, start_time, end_time, user_id])

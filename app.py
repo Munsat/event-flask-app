@@ -1,8 +1,17 @@
 from flask import Flask, render_template, request,redirect, session
-from models.events import get_all_events
+from models.events import get_all_events, insert_event
 from models.users import insert_user, select_user_by_email
 from models.attendances import insert_event_attendance, get_all_attendance_by_userid, delete_attendance_by_eventid
 from werkzeug.security import generate_password_hash
+import requests
+from geopy.geocoders import Nominatim
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+
+
 # #  Import
 # from cloudinary import CloudinaryImage
 # from cloudinary.uploader import upload
@@ -21,10 +30,8 @@ from werkzeug.security import generate_password_hash
 
 # # Transform
 # url, options = cloudinary_url("olympic_flag", width=100, height=150, crop="fill")
-
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'aspdkjpq343te5y5'
-
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 
 @app.route('/')
 def index():
@@ -89,6 +96,7 @@ def logout():
     session.pop('id')
     return redirect('/')
 
+
 @app.route('/attend_event_action')
 def attend_event_action():
     event_id = request.args.get('id')
@@ -116,14 +124,44 @@ def cancel_attendance():
     return redirect('/upcoming_events')
     
 
-@app.route('/create_public_event')
-def create_public_event():
-    return render_template('create_event.html')
+@app.route('/create_public_event', methods=['GET', 'POST'])
+def create_event():
+    if request.method == 'POST':
+        event_name = request.form.get('name')
+        description = request.form.get('description')
+        location = request.form.get('location')
+        date = request.form.get('date')
+        start_time = request.form.get('start-time')
+        end_time = request.form.get('end-time')
+        user_id = session.get('id')
+        type = request.form.get('type')
+        insert_event(event_name, type, description, location, date, start_time, end_time, user_id)
+        return redirect ('/')
+
+        # geolocator = Nominatim(user_agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36')
+        # location = geolocator.geocode(input_location)
+        # print(location.address)
+        # print(location.latitude, location.longitude)
+
+    
+    return render_template('create_event.html', is_public = True)
 
 
-@app.route('/create_private_event')
+@app.route('/create_private_event', methods=['GET', 'POST'])
 def create_private_event():
-    pass
+    event_name = request.form.get('name')
+    description = request.form.get('description')
+    location = request.form.get('location')
+    date = request.form.get('date')
+    start_time = request.form.get('start-time')
+    end_time = request.form.get('end-time')
+    user_id = session.get('id')
+    type = request.form.get('type')
+    
+    email_list = request.form.get('emails').lower().split(',')
+    parsed_email_list = [email.strip() for email in email_list]
+
+    return render_template('create_event.html', is_public = False)
 
 
 @app.route('/event_details')

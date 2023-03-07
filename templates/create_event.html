@@ -6,8 +6,17 @@ Create Event
 
 {% block main %}
 <div class="form container">
+    {% if is_public %}
     <h2>Create a Public Event Form</h2>
-    <form action="" method="POST">
+    {% else %}
+    <h2>Create a Private Event Form</h2>
+    {% endif %}
+    
+    {% if is_public %}
+    <form action="/create_public_event" method="POST">
+    {% else %}
+    <form action="/create_private_event" method="POST">
+    {% endif %}
         <div>
             <label for="event-name">Event Name: </label>
             <input id="event-name" type="text" name="name">
@@ -21,7 +30,7 @@ Create Event
             <input id="location" type="text" name="location">
         </div>
         <div>
-            <label for="date">Date and Time: </label>
+            <label for="date">Date: </label>
             <input id="date" type="date" name="date">
         </div>
         <div class="time-container">
@@ -33,9 +42,16 @@ Create Event
                 <label for="end-time">End Time: </label>
                 <input id="end-time" type="time" name="end-time">
             </div>
-            
         </div>
-            
+        {% if not is_public %}
+        <div>
+            <label for="emails">Enter the email addresses of the invitees: </label>
+            <textarea id="emails" name="emails" rows="2" cols="45" placeholder="a@example.com, b@example.com ..."></textarea>
+        </div> 
+            <input type="hidden" name="type" value="Private">
+        {% else %}
+            <input type="hidden" name="type" value="Public">
+        {% endif %}
         
         <button type="submit">Submit</button>
     </form>
