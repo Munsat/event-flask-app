@@ -10,7 +10,7 @@ def sql_select_all(query):
     db_connection.close()
     return result
 
-def sql_select_all_by_id(query, params):
+def sql_select_all_by_col(query, params):
     db_connection = psycopg2.connect('dbname=event_planner')
     db_cursor = db_connection.cursor(cursor_factory=RealDictCursor)
     db_cursor.execute(query, params)

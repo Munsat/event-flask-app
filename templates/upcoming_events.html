@@ -49,6 +49,7 @@ Upcoming Events
         {% if user_name == 'UNKNOWN': %}
         <a href="/signup"><button>Attend</button></a>
         {% else %}
+        {% if event.user_id != user_id %}
         {% for attendance in all_attendances if all_attendances|length>0 %}
         {% if attendance.event_id == event.id %}
         {% set ns.is_attending=True %}
@@ -59,6 +60,7 @@ Upcoming Events
         {% else %}
         <a href="/attend_event_action?id={{event.id}}"><button>Attend</button></a>
         {% endif %}            
+        {% endif %}
         {% endif %}
         
         <a href="/event_details"><button>See Event Details</button></a>
