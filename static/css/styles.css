@@ -286,3 +286,11 @@ form>*{
     display: block;
 }
 
+.radio-container>*{
+    text-align: left;
+    margin-top: 1rem;
+}
+
+.radio-container span{
+    margin-left: 1rem;
+}

@@ -18,26 +18,26 @@ Home
     <div class="home-text">
       <h1>Let's Make Something Happen!</h1>
       <div class="home-btn-container">
-        <a href="/create_public_event"><button>Create a Public Event</button></a>
-        <a href="/create_private_event"><button>Create a Private Event</button></a>
+        <a href="/create_event"><button>Create an Event</button></a>
       </div>
       
     </div>
   </div>
   
   {% endif %}
+
   <div class="upcoming-section">
     <h1>Upcoming Events</h1>
     <div class="home-events-container">
-    {% for event in all_events %}
-        <div class="home-events container" onclick="location.href='/upcoming_event_detail'">
-        <h3>{{event.name}}</h3>
-        <p>{{event.date}}</p>
-        <p>{{event.location}}</p>
-        <!-- <p>{{event.description}}</p> -->
+            {% for event in all_events %}
+            <div class="home-events container" onclick="location.href='/upcoming_event_detail'">
+              <h3>{{event.name}}</h3>
+              <p>{{event.date}}</p>
+              <p>{{event.location}}</p>
+            </div>
+            {% endfor %}
       </div>
-    {% endfor %}
-    </div>
-  </div>
-</div>
+    
 {% endblock main %}
+
+
