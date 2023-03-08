@@ -39,6 +39,17 @@ def sql_write(query, params):
     db_connection.close()
 
 
+def sql_write_with_return(query, params):
+    db_connection = psycopg2.connect('dbname=event_planner')
+    db_cursor = db_connection.cursor()
+    db_cursor.execute(query, params)
+    db_connection.commit()
+    result =  db_cursor.fetchone()[0]
+    db_cursor.close()
+    db_connection.close()
+    return result
+
+
 def sql_delete(query, params):
     db_connection = psycopg2.connect('dbname=event_planner')
     db_cursor = db_connection.cursor()

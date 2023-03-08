@@ -26,6 +26,7 @@ CREATE TABLE events (
     CONSTRAINT fk_events_users
     FOREIGN KEY (user_id)
     REFERENCES users(id)
+    ON DELETE CASCADE
 );
 
 
@@ -34,9 +35,11 @@ CREATE TABLE attendances (
     user_id INT,
     CONSTRAINT fk_attendance_users
     FOREIGN KEY (user_id)
-    REFERENCES users(id),
+    REFERENCES users(id)
+    ON DELETE CASCADE,
     event_id INT,
     CONSTRAINT fk_attendance_events
     FOREIGN KEY (event_id)
     REFERENCES events(id)
+    ON DELETE CASCADE
 );

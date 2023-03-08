@@ -11,26 +11,26 @@ Create Event
     <form action="" method="POST">
         <div>
             <label for="event-name">Event Name: </label>
-            <input id="event-name" type="text" name="name">
+            <input id="event-name" type="text" name="name" value="{{event.name}}">
         </div>
         <div class="radio-container">
             <label for="type">Type: </label>
             <p>
-                <input id="type" name="type" type="radio" value="Public">Public Event
+                <input id="type" name="type" type="radio" value="Public" checked>Public Event
                 <span><input id="type" name="type" type="radio" value="Private">Private Event</span>
             </p>
         </div>
         <div>
             <label for="description">Desciption: </label>
-            <textarea id="description" name="description" rows="4" cols="45"></textarea>
+            <textarea id="description" name="description" rows="4" cols="45">{{event.description}}</textarea>
         </div>
         <div>
             <label for="location">Location of the venue: </label>
-            <input id="location" type="text" name="location">
+            <input id="location" type="text" name="location"  value="{{event.location}}">
         </div>
         <div>
             <label for="date">Date: </label>
-            <input id="date" type="date" name="date">
+            <input id="date" type="date" name="date"  value="{{event.date}}">
         </div>
         <div class="time-container">
             <div>
@@ -44,7 +44,7 @@ Create Event
         </div>
         <div>
             <label for="emails">Enter the email addresses of the invitees: </label>
-            <textarea id="emails" name="emails" rows="2" cols="45" placeholder="a@example.com, b@example.com ..."></textarea>
+            <textarea id="emails" name="emails" rows="2" cols="45" placeholder="a@example.com, b@example.com ..."  value="{{event.emails}}"></textarea>
         </div> 
        
         

@@ -19,4 +19,4 @@ def get_all_attendance_by_userid(user_id):
     return all_attendances    
 
 def delete_attendance_by_eventid(event_id):
-    return sql_delete('DELETE FROM attendances WHERE event_id = %s', [event_id])
+    return sql_delete('DELETE FROM attendances WHERE event_id = %s', [event_id]) 

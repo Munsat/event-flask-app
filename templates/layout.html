@@ -19,7 +19,7 @@
                 <li><a class='nav-bar' href="/">home</a></li>
                 <li><a class='nav-bar' href="/upcoming_events">upcoming events</a></li>
                 {% if user_name != 'UNKNOWN': %}
-                <li><a class='nav-bar' href="/create_event">create event</a></li>
+                <li><a class='nav-bar' href="/add_or_edit_event">create event</a></li>
              
                 <div class="dropdown">
                     <a class='nav-bar'>my account
@@ -29,6 +29,7 @@
                     <div class="dropdown-content">
                         <a class="my-acc" href="/my_events">My Events</a>
                         <a class="my-acc" href="/attending_events">Attending Events</a>
+                        <a class="my-acc" href="/delete_acc">Delete Account</a>
                     </div>
                 </div>
                 <li><a class='nav-bar' href="/logout">logout</a></li>

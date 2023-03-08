@@ -1,17 +1,15 @@
 from flask import Flask, render_template, request,redirect, session
-from models.events import get_all_events, insert_public_event, get_all_my_events, insert_private_event
-from models.users import insert_user, select_user_by_email
+from models.events import get_all_events, delete_event_by_id, insert_event, get_all_my_events, get_event_by_id, update_event
+from models.users import insert_user, select_user_by_email, get_all_user_emails, delete_user
 from models.attendances import insert_event_attendance, get_all_attendance_by_userid, delete_attendance_by_eventid
 from werkzeug.security import generate_password_hash
 import requests
 from geopy.geocoders import Nominatim
-from dotenv import load_dotenv
 import random
 import os
-import datetime
+from datetime import datetime
 import smtplib
 
-load_dotenv()
 
 
 # #  Import
@@ -34,9 +32,10 @@ load_dotenv()
 # url, options = cloudinary_url("olympic_flag", width=100, height=150, crop="fill")
 
 
-
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+
+
 
 @app.route('/')
 def index():
@@ -45,10 +44,11 @@ def index():
                            all_events= random.sample(all_events, 3),
                            user_name =session.get('name', 'UNKNOWN'))
 
+
+
 @app.route('/upcoming_events')
 def upcoming_events():
     all_events = get_all_events(session.get('email'), session.get('id'))
-    print(all_events)
     if session.get('name', 'UNKNOWN') != 'UNKNOWN':
         all_attendances = get_all_attendance_by_userid(session.get('id'))
         return render_template('upcoming_events.html',  
@@ -60,6 +60,7 @@ def upcoming_events():
                            all_events=all_events,
                            user_name =session.get('name', 'UNKNOWN'),
                            user_id = session.get('id'))
+
 
 
 @app.route ('/attending_events')
@@ -76,19 +77,44 @@ def attending_events():
                           )
 
 
+
+@app.route('/attend_event_action')
+def attend_event_action():
+    event_id = request.args.get('id')
+    user_id = session.get('id')
+    insert_event_attendance(user_id, event_id)
+    return redirect('/upcoming_events')
+
+
+
+@app.route('/cancel_attendance')
+def cancel_attendance():
+    event_id = request.args.get('id')
+    delete_attendance_by_eventid(event_id)
+    return redirect('/upcoming_events')
+    
+
+
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
+    is_duplicate = False
     if request.method == 'POST':
         name = request.form.get('name')
         email = request.form.get('email').lower()
         if request.form.get('password1') == request.form.get('password2'):
             hashed_password = generate_password_hash(request.form.get('password1')) 
-            insert_user(name, email, hashed_password)
-            user = select_user_by_email(email)
-            session['email'] = user.email
-            session['id'] = user.id
-            session['name'] = user.name
-            return redirect('/')
+            all_emails = get_all_user_emails()
+            print(all_emails)
+            for each_email in all_emails:
+                if email == each_email['email']:
+                    is_duplicate =True
+
+            if not is_duplicate:
+                user_id = insert_user(name, email, hashed_password)
+                session['email'] = email
+                session['id'] = user_id
+                session['name'] = name
+                return redirect('/')
         else:
             return redirect('/')    
     return render_template('signup.html', 
@@ -106,10 +132,10 @@ def login():
             session['id'] = user.id
             session['name'] = user.name
             return redirect('/')
-
         
     return render_template ('login.html', 
                             user_name =session.get('name', 'UNKNOWN'))
+
 
 
 @app.route('/logout')
@@ -120,54 +146,55 @@ def logout():
     return redirect('/')
 
 
-@app.route('/attend_event_action')
-def attend_event_action():
-    event_id = request.args.get('id')
-    user_id = session.get('id')
-    insert_event_attendance(user_id, event_id)
-    return redirect('/upcoming_events')
+@app.route('/delete_acc')
+def delete_acc():
+    id = session.get('id')
+    delete_user(id)
+    session.pop('name')
+    session.pop('email')
+    session.pop('id')
+    return redirect('/')
 
 
 
-
-
-@app.route('/cancel_attendance')
-def cancel_attendance():
-    event_id = request.args.get('id')
-    delete_attendance_by_eventid(event_id)
-    return redirect('/upcoming_events')
-    
-
-@app.route('/create_event', methods=['GET', 'POST'])
-def create_event():
+@app.route('/add_or_edit_event', methods=['GET', 'POST'])
+def add_or_edit_event():
+    id = request.args.get('id')
     if request.method == 'POST':
         event_name = request.form.get('name')
         type = request.form.get('type')
         description = request.form.get('description')
-        location = request.form.get('location')
+        location = request.form.get('location').capitalize()
         date = request.form.get('date')
         start_time = request.form.get('start-time')
         end_time = request.form.get('end-time')
         user_id = session.get('id')
         type = request.form.get('type')
-        print(type)
-        if type == 'Public':
-            insert_public_event(event_name, type, description, location, date, start_time, end_time, user_id)
+        email_list = request.form.get('emails').lower().split(',')
+        parsed_email_list = [email.strip() for email in email_list]
+        # parsed_start_time = datetime.strptime(start_time, '%H:%M').strftime("%I:%M %p")
+        # parsed_end_time = datetime.strptime(end_time, '%H:%M').strftime("%I:%M %p")
+        # parsed_date = datetime.strptime(date, '%Y-%m-%d').strftime("%d %B, %Y")
+
+        if id == None:
+            id = insert_event(event_name, type, description, location,date,start_time,end_time,parsed_email_list,user_id )
         else:
-            email_list = request.form.get('emails').lower().split(',')
-            parsed_email_list = [email.strip() for email in email_list]
-            insert_private_event(event_name, type, description, location,date,start_time,end_time,parsed_email_list,user_id )
-   
+            id = update_event(event_name, type, description, location,date,start_time,end_time,parsed_email_list,user_id,id )
+        if len(email_list) >1:    
+            event = get_event_by_id(id)
+            event.send_email()
         return redirect ('/')
 
         # geolocator = Nominatim(user_agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36')
         # location = geolocator.geocode(input_location)
         # print(location.address)
         # print(location.latitude, location.longitude)
-
-    
-    return render_template('create_event.html')
-
+    else:
+        if id == None:
+            return render_template('create_event.html', event =[])
+        else:
+            event = get_event_by_id(id)
+            return render_template('create_event.html', event=event)
 
 
 
@@ -181,9 +208,25 @@ def my_events():
                            )
     return redirect('/')
 
+
+
 @app.route('/event_details')
 def event_details():
-    pass
+    id = request.args.get('id')
+    event = get_event_by_id(id)
+    return render_template('event_details.html', 
+                           event=event,
+                           user_id = session.get('id'))
+
+
+
+@app.route('/delete_event')
+def delete_event():
+    id = request.args.get('id')
+    delete_event_by_id(id)
+    return redirect('/upcoming_events')
+
+
 
 
 if __name__ == '__main__':

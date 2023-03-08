@@ -18,7 +18,7 @@ Home
     <div class="home-text">
       <h1>Let's Make Something Happen!</h1>
       <div class="home-btn-container">
-        <a href="/create_event"><button>Create an Event</button></a>
+        <a href="/add_or_edit_event"><button>Create an Event</button></a>
       </div>
       
     </div>
@@ -30,11 +30,15 @@ Home
     <h1>Upcoming Events</h1>
     <div class="home-events-container">
             {% for event in all_events %}
-            <div class="home-events container" onclick="location.href='/upcoming_event_detail'">
-              <h3>{{event.name}}</h3>
-              <p>{{event.date}}</p>
-              <p>{{event.location}}</p>
-            </div>
+            
+              <div class="home-events container">
+                <a href="/event_details?id={{event.id}}">
+                <h3>{{event.name}}</h3>
+                <p>{{event.date}}</p>
+                <p>{{event.location}}</p>
+              </a>
+              </div>
+            
             {% endfor %}
       </div>
     

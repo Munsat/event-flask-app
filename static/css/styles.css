@@ -69,6 +69,7 @@ select {
 li,a{
     text-decoration: none;
     list-style-type: none;
+    color: #ffffff;
 }
 
 header{
@@ -294,3 +295,10 @@ form>*{
 .radio-container span{
     margin-left: 1rem;
 }
+
+.event-details p, .event-details> ul, .event-details>li{
+    text-align: left;
+    margin: 1rem;
+    padding: 0 5rem;
+}
+
