@@ -79,6 +79,15 @@ header{
     padding:1rem 3rem;
 }
 
+
+.welcome-title{
+    color: #ffffff;
+}
+
+.event-title{
+    color: #cd9fe8;
+}
+
 .primary-nav{
     display: flex;
     
@@ -104,6 +113,7 @@ header{
     display: grid;
     grid-template-rows: 1fr min-content;
     gap: 2rem;
+    
    
 }
 
@@ -141,7 +151,7 @@ header{
     border-radius: 45px;
 }
 .home-text>h1{
-    color: #ffffff;
+    color: #cd9fe8;
     font-size: 56px;
     font-weight: 500;
 }
@@ -302,3 +312,6 @@ form>*{
     padding: 0 5rem;
 }
 
+.flashes{
+    background-color: #5d4073;
+}

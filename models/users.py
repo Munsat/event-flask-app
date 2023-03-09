@@ -18,7 +18,7 @@ def insert_user(name, email, hashed_password):
 
 def select_user_by_email(email):
      user =  sql_select_one('SELECT id,name,email,hashed_password FROM users WHERE email=%s',[email])
-     return User(user['id'],user['name'], user['email'], user['hashed_password'])
+     return User(user['id'],user['name'], user['email'], user['hashed_password']) if user != None else None
 
 def get_all_user_emails():
     return sql_select_all('SELECT email FROM users')

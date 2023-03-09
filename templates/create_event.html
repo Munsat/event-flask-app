@@ -5,19 +5,25 @@ Create Event
 {% endblock heading %}
 
 {% block main %}
+
 <div class="form container">
     <h2>Event Form:</h2>
 
     <form action="" method="POST">
         <div>
             <label for="event-name">Event Name: </label>
-            <input id="event-name" type="text" name="name" value="{{event.name}}">
+            <input id="event-name" type="text" name="name" value="{{event.name}}" required>
         </div>
         <div class="radio-container">
             <label for="type">Type: </label>
             <p>
+                {% if event.type == 'Private' %}
+                <input id="type" name="type" type="radio" value="Public" >Public Event
+                <span><input id="type" name="type" type="radio" value="Private" checked>Private Event</span>
+                {% else %}
                 <input id="type" name="type" type="radio" value="Public" checked>Public Event
-                <span><input id="type" name="type" type="radio" value="Private">Private Event</span>
+                <span><input id="type" name="type" type="radio" value="Private" >Private Event</span>
+                {% endif %}
             </p>
         </div>
         <div>
@@ -26,25 +32,25 @@ Create Event
         </div>
         <div>
             <label for="location">Location of the venue: </label>
-            <input id="location" type="text" name="location"  value="{{event.location}}">
+            <input id="location" type="text" name="location"  value="{{event.location}}" required>
         </div>
         <div>
             <label for="date">Date: </label>
-            <input id="date" type="date" name="date"  value="{{event.date}}">
+            <input id="date" type="date" name="date"  value="{{event.date}}" required>
         </div>
         <div class="time-container">
             <div>
                 <label for="start-time">Start Time: </label>
-                <input id="start-time" type="time" name="start-time">
+                <input id="start-time" type="time" name="start-time" value="{{start_time}}" required>
             </div>
             <div>
                 <label for="end-time">End Time: </label>
-                <input id="end-time" type="time" name="end-time">
+                <input id="end-time" type="time" name="end-time" value="{{end_time}}" required>
             </div>
         </div>
         <div>
             <label for="emails">Enter the email addresses of the invitees: </label>
-            <textarea id="emails" name="emails" rows="2" cols="45" placeholder="a@example.com, b@example.com ..."  value="{{event.emails}}"></textarea>
+            <textarea id="emails" name="emails" rows="2" cols="45" placeholder="a@example.com, b@example.com ...">{{(', ').join(event.email_list)}}</textarea>
         </div> 
        
         

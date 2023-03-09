@@ -21,7 +21,7 @@ class Event:
         self.email_list = email_list
         self.user_id = user_id
 
-    def send_email(self):
+    def send_email(self, user_name):
         parsed_date = self.date.strftime("%d %B, %Y")
 
         connection = smtplib.SMTP("smtp.gmail.com")
@@ -30,7 +30,7 @@ class Event:
         for email in self.email_list:
              connection.sendmail(from_addr=my_email,
                                 to_addrs=email, 
-                                msg=f"Subject: Invitation to {self.name}\n\nYou are cordially invited to attend {self.name}, that we have planned for {parsed_date}. It will be wonderful to have you among us!\nLocation: {self.location}.\nDate and Time: {self.date}, from {self.start_time} to {self.end_time}")
+                                msg=f"Subject: Invitation to {self.name}\n\nHi,\n\nYou are cordially invited to attend {self.name}, that we have planned for {parsed_date}. It will be wonderful to have you among us!\nLocation: {self.location}.\nDate and Time: {self.date}, from {self.start_time} to {self.end_time} \n\nKind Regards,\n{user_name}")
         connection.close()    
 
 

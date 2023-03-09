@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request,redirect, session
+from flask import Flask, render_template, request,redirect, session, flash
 from models.events import get_all_events, delete_event_by_id, insert_event, get_all_my_events, get_event_by_id, update_event
 from models.users import insert_user, select_user_by_email, get_all_user_emails, delete_user
 from models.attendances import insert_event_attendance, get_all_attendance_by_userid, delete_attendance_by_eventid
@@ -8,7 +8,6 @@ from geopy.geocoders import Nominatim
 import random
 import os
 from datetime import datetime
-import smtplib
 
 
 
@@ -99,26 +98,31 @@ def cancel_attendance():
 def signup():
     is_duplicate = False
     if request.method == 'POST':
-        name = request.form.get('name')
-        email = request.form.get('email').lower()
+        name = request.form.get('name').strip().capitalize()
+        email = request.form.get('email').lower().strip()
         if request.form.get('password1') == request.form.get('password2'):
             hashed_password = generate_password_hash(request.form.get('password1')) 
             all_emails = get_all_user_emails()
-            print(all_emails)
             for each_email in all_emails:
                 if email == each_email['email']:
                     is_duplicate =True
-
             if not is_duplicate:
                 user_id = insert_user(name, email, hashed_password)
                 session['email'] = email
                 session['id'] = user_id
                 session['name'] = name
+                flash('You were successfully logged in')
                 return redirect('/')
+            else:
+                flash('Sorry, this email is already registered with us. Try logging in.')
+                return redirect('/login')   
         else:
-            return redirect('/')    
+            flash('Sorry your passwords do not match. Please try again.')
+            return redirect('/signup') 
     return render_template('signup.html', 
                            user_name =session.get('name', 'UNKNOWN'))
+
+
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -127,11 +131,15 @@ def login():
         email = request.form.get('email').lower()
         password = request.form.get('password')
         user = select_user_by_email(email)
-        if user.validate_password(password):
+        if ((user.validate_password(password) and user.email == email) if user != None else None):
             session['email'] = user.email
             session['id'] = user.id
             session['name'] = user.name
+            flash('You have successfully logged in.')
             return redirect('/')
+        else:
+            flash('Your email or password was incorrect. Please try again.')
+            return redirect('/login')
         
     return render_template ('login.html', 
                             user_name =session.get('name', 'UNKNOWN'))
@@ -143,6 +151,7 @@ def logout():
     session.pop('name')
     session.pop('email')
     session.pop('id')
+    flash('You have successfully logged out.')
     return redirect('/')
 
 
@@ -172,17 +181,17 @@ def add_or_edit_event():
         type = request.form.get('type')
         email_list = request.form.get('emails').lower().split(',')
         parsed_email_list = [email.strip() for email in email_list]
-        # parsed_start_time = datetime.strptime(start_time, '%H:%M').strftime("%I:%M %p")
-        # parsed_end_time = datetime.strptime(end_time, '%H:%M').strftime("%I:%M %p")
-        # parsed_date = datetime.strptime(date, '%Y-%m-%d').strftime("%d %B, %Y")
 
         if id == None:
             id = insert_event(event_name, type, description, location,date,start_time,end_time,parsed_email_list,user_id )
+            flash(f'A new {type.lower()} event has been created.')
         else:
             id = update_event(event_name, type, description, location,date,start_time,end_time,parsed_email_list,user_id,id )
-        if len(email_list) >1:    
+            flash(f'{event_name} event has been updated.')
+        if email_list != ['']:    
             event = get_event_by_id(id)
-            event.send_email()
+            event.send_email(session.get('name'))
+            flash('Emails have been sent to the invitees.')
         return redirect ('/')
 
         # geolocator = Nominatim(user_agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36')
@@ -194,7 +203,9 @@ def add_or_edit_event():
             return render_template('create_event.html', event =[])
         else:
             event = get_event_by_id(id)
-            return render_template('create_event.html', event=event)
+            start_time = datetime.strptime(event.start_time, '%I:%M %p').strftime('%H:%M') 
+            end_time = datetime.strptime(event.end_time, '%I:%M %p').strftime('%H:%M')
+            return render_template('create_event.html', event=event, start_time=start_time, end_time=end_time)
 
 
 

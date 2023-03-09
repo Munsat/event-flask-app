@@ -7,19 +7,19 @@ Event Details
 
 {% block main %}
 <div class="form container event-details">
-  <h2>{{event.name}}</h2>
+  <h2 class="event-title">{{event.name}}</h2>
   <p>EVENT TYPE: {{event.type}}</p>
   <p>{{event.description}}</p>
   <p>LOCATION: {{event.location.capitalize()}}</p>
   <p>DATE: {{event.date}}</p>
   <p>FROM {{event.start_time}} TO {{event.end_time}}</p>
   <ul>INVITEES: 
-    {% if event.email_list != None %}
+    {% if event.email_list != [''] %}
     {% for email in event.email_list %}
    <li>{{email}}</li>
-   {%endfor%}
+   {% endfor %}
    {% else %}
-   <li>None</li>
+   <li>Not Displayed</li>
    {% endif %}
 
 </ul>
