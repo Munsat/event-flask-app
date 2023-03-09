@@ -6,15 +6,22 @@ Event Details
 
 
 {% block main %}
+
 <div class="form container event-details">
   <h2 class="event-title">{{event.name}}</h2>
   <p>EVENT TYPE: {{event.type}}</p>
   <p>{{event.description}}</p>
   <p>LOCATION: {{event.location.capitalize()}}</p>
   <p>DATE: {{event.date}}</p>
+  {% if is_soon %}
+  <p class="weather-link">Check Weather Forcast</p>
+  <p class="weather-info">
+    The event date will have {{weather_code.lower()}} with a highest temperature of {{temperature_max}}C and lowest of {{temperature_min}}C.
+  </p>
+  {% endif %}
   <p>FROM {{event.start_time}} TO {{event.end_time}}</p>
   <ul>INVITEES: 
-    {% if event.email_list != [''] %}
+    {% if event.email_list != ['']  and  event.email_list != None %}
     {% for email in event.email_list %}
    <li>{{email}}</li>
    {% endfor %}

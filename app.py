@@ -7,7 +7,8 @@ import requests
 from geopy.geocoders import Nominatim
 import random
 import os
-from datetime import datetime
+from weather_code import get_weather_info
+from datetime import datetime, date
 
 
 
@@ -194,10 +195,7 @@ def add_or_edit_event():
             flash('Emails have been sent to the invitees.')
         return redirect ('/')
 
-        # geolocator = Nominatim(user_agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36')
-        # location = geolocator.geocode(input_location)
-        # print(location.address)
-        # print(location.latitude, location.longitude)
+
     else:
         if id == None:
             return render_template('create_event.html', event =[])
@@ -223,12 +221,40 @@ def my_events():
 
 @app.route('/event_details')
 def event_details():
+    is_soon = False
     id = request.args.get('id')
     event = get_event_by_id(id)
+    date_diff = (event.date - date.today()).days
+    if date_diff < 15:
+        is_soon = True
+        geolocator = Nominatim(user_agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36')
+        location = geolocator.geocode(event.location)
+        params = {
+            'latitude': location.latitude,
+            'longitude': location.longitude,
+            'daily': 'weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max',
+            'timezone':'Australia/Sydney',
+            'forecast_days':16,
+        }
+        response = requests.get(url=f'https://api.open-meteo.com/v1/forecast', params=params).json()
+        index = None
+        index =[num for num,each in enumerate(response['daily']['time']) if each == datetime.strftime(event.date, '%Y-%m-%d')][0]
+        weather_code = get_weather_info(response['daily']['weathercode'][index]) 
+        temperature_max = response['daily']['temperature_2m_max'][index]
+        temperature_min = response['daily']['temperature_2m_min'][index]
+        print(weather_code, temperature_max, temperature_min)
+        return render_template('event_details.html', 
+            event=event,
+            user_id = session.get('id'),
+            weather_code = weather_code,
+            temperature_max=temperature_max,
+            temperature_min=temperature_min,
+            is_soon=is_soon
+            )
     return render_template('event_details.html', 
-                           event=event,
-                           user_id = session.get('id'))
-
+            event=event,
+            user_id = session.get('id'))
+    
 
 
 @app.route('/delete_event')
