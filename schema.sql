@@ -43,3 +43,15 @@ CREATE TABLE attendances (
     REFERENCES events(id)
     ON DELETE CASCADE
 );
+
+
+CREATE TABLE images (
+    id SERIAL PRIMARY KEY,
+    public_id TEXT,
+    image_url TEXT,
+    event_id INT,
+    CONSTRAINT fk_images_events
+    FOREIGN KEY (event_id)
+    REFERENCES events(id)
+    ON DELETE CASCADE
+)

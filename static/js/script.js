@@ -14,15 +14,27 @@ function searchFunc() {
 };
 
 
-
-const weatherLink = document.querySelector('.weather-link')
-const weatherInfo = document.querySelector('.weather-info')
-
-weatherLink.addEventListener('click', ()=>{
-  if (weatherInfo.style.display === 'none'){
-    weatherInfo.style.display = 'block'
+//To display gallery add photos form
+function toggleFormDisplay() {
+  const addForm = document.querySelector('.add-photos-form');
+  if (addForm.style.display === 'block'){
+    addForm.style.display = 'none'
   }else{
-    weatherInfo.style.display = 'none'
-  }
-  
-});
+    addForm.style.display = 'block'
+  }}
+
+
+
+// To display weather info
+  function toggleWeatherDisplay() {
+    const weatherInfo = document.querySelector('.weather-info');
+    if (weatherInfo.style.display === 'block'){
+      weatherInfo.style.display = 'none'
+    }else{
+      weatherInfo.style.display = 'block'
+    }}
+
+
+    function confirmDelete(e){
+      return confirm('Are you sure you want to delete?')
+    }

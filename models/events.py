@@ -20,6 +20,7 @@ class Event:
         self.end_time = end_time
         self.email_list = email_list
         self.user_id = user_id
+        self.user_name = None
 
     def send_email(self, user_name):
         parsed_date = self.date.strftime("%d %B, %Y")
@@ -63,13 +64,11 @@ def get_all_my_events(user_id):
            start_time= (event['start_time']).strftime("%I:%M %p"),
            end_time = (event['end_time']).strftime("%I:%M %p"),
            email_list = event['email_list'],
-           user_id = event['user_id']))
+           user_id = event['user_id'],
+           ))
     return all_events
 
     
-# def insert_public_event(name, type, description, location, date, start_time, end_time, user_id):
-#     return sql_write("INSERT INTO events (name, type, description, location, date, start_time, end_time, user_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", [name, type, description,location, date, start_time, end_time, user_id])
-
 def insert_event(name, type, description, location, date, start_time, end_time,email_list, user_id):
     id =  sql_write_with_return("INSERT INTO events (name, type, description, location, date, start_time, end_time,email_list, user_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id", [name, type, description,location, date, start_time, end_time, email_list, user_id])
     return id
@@ -79,9 +78,9 @@ def update_event(name, type, description, location, date, start_time, end_time, 
     return id
 
 def get_event_by_id(id):
-    event = sql_select_one("SELECT id, name, type, description, location, date, start_time, end_time,email_list, user_id FROM events WHERE id=%s",[id])
-    return Event(id=event['id'],
-           name=event['name'],
+    event = sql_select_one("SELECT events.id, events.name AS event_name, type, description, location, date, start_time, end_time,email_list, user_id, users.name AS USER_NAME FROM events JOIN users ON users.id=events.user_id WHERE events.id=%s",[id])
+    one_event = Event(id=event['id'],
+           name=event['event_name'],
            type=event['type'],
            description=event['description'],
            location=event['location'],
@@ -89,7 +88,10 @@ def get_event_by_id(id):
            start_time= (event['start_time']).strftime("%I:%M %p"),
            end_time = (event['end_time']).strftime("%I:%M %p"),
            email_list = event['email_list'],
-           user_id = event['user_id'])
+           user_id = event['user_id'],
+           )
+    one_event.user_name = event['user_name']
+    return one_event
 
 
 def delete_event_by_id(id):

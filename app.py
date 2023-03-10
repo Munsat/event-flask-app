@@ -2,6 +2,7 @@ from flask import Flask, render_template, request,redirect, session, flash
 from models.events import get_all_events, delete_event_by_id, insert_event, get_all_my_events, get_event_by_id, update_event
 from models.users import insert_user, select_user_by_email, get_all_user_emails, delete_user
 from models.attendances import insert_event_attendance, get_all_attendance_by_userid, delete_attendance_by_eventid
+from models.images import insert_image,show_images
 from werkzeug.security import generate_password_hash
 import requests
 from geopy.geocoders import Nominatim
@@ -9,21 +10,9 @@ import random
 import os
 from weather_code import get_weather_info
 from datetime import datetime, date
+from cloudinary import CloudinaryImage
+import cloudinary.uploader
 
-
-
-# #  Import
-# from cloudinary import CloudinaryImage
-# from cloudinary.uploader import upload
-# from cloudinary.utils import cloudinary_url
-
-# # Config
-# cloudinary.config(
-#   cloud_name = "dfqp346je",
-#   api_key = "657155384573282",
-#   api_secret = "o6anqoQUN2M_cVJ7_q5Ulunuws4",
-#   secure = True
-# )
 
 # # Upload
 # upload("https://upload.wikimedia.org/wikipedia/commons/a/ae/Olympic_flag.jpg", public_id="olympic_flag")
@@ -242,7 +231,6 @@ def event_details():
         weather_code = get_weather_info(response['daily']['weathercode'][index]) 
         temperature_max = response['daily']['temperature_2m_max'][index]
         temperature_min = response['daily']['temperature_2m_min'][index]
-        print(weather_code, temperature_max, temperature_min)
         return render_template('event_details.html', 
             event=event,
             user_id = session.get('id'),
@@ -262,6 +250,35 @@ def delete_event():
     id = request.args.get('id')
     delete_event_by_id(id)
     return redirect('/upcoming_events')
+
+
+
+@app.route('/gallery')
+def gallery():
+    event_id = request.args.get('id')
+    images = show_images(event_id=event_id)
+    for image in images:
+        transformed_url = CloudinaryImage(image.public_id).build_url(
+            width = 500, aspect_ratio=1.0, crop='fill', gravity='faces'
+        )
+        image.image_url = transformed_url
+    return render_template('gallery.html', event_id=event_id, images=images)
+
+
+
+@app.route('/upload_photo', methods=['GET', 'POST'])
+def upload_photo():
+    if request.method == 'POST':
+        images = request.files.getlist('images')
+        event_id = request.form.get('event_id')
+        
+        for image in images:
+            image_rows = []
+            uploaded_image = cloudinary.uploader.upload(image)
+            image_rows.append([uploaded_image['public_id'], uploaded_image['secure_url'], event_id])
+            insert_image(image_rows)
+        return redirect('/upcoming_events')
+    return redirect('/gallery')
 
 
 

@@ -1,10 +1,14 @@
 TRUNCATE TABLE events CASCADE;
 TRUNCATE TABLE users CASCADE;
 TRUNCATE TABLE attendances CASCADE;
+TRUNCATE TABLE images CASCADE;
+
+
 
 ALTER SEQUENCE events_id_seq RESTART WITH 1;
 ALTER SEQUENCE users_id_seq RESTART WITH 1;
 ALTER SEQUENCE attendances_id_seq RESTART WITH 1;
+ALTER SEQUENCE images_id_seq RESTART WITH 1;
 
 
 INSERT INTO users (name, email, hashed_password)VALUES
@@ -18,3 +22,5 @@ INSERT INTO events (name, type, description, location, date, start_time, end_tim
 ('Cherry Harvest Festival', 'Public', 'An epic event that comes only once a year. Come visit us to get your pick of the best cherries. There will be lots of food stalls and music for you!','25 Cherry St, Coogee, NSW, 2656','2023-08-10','09:00','17:00',NULL, 3),
 ('Antique Auction', 'Public', 'We will be auctioning items to be sold by the official trustee in bankruptcy, jewellery and more!','25 Riverview Rd , Bondi, NSW, 2210','2023-09-16','19:00','00:00',NULL, 2),
 ('Karla Dickens: Embracing Shadows', 'Public', 'Wiradjuri artist Karla Dickens has assembled a range of her works to form the new exhibition Embracing Shadows, showcasing her 30 year career at the Campbelltown Arts Centre.  This free exhibition shines a spotlight on female identity and racial discrimination, two themes that Dickens'' work engages with in a profound and honest way. She explores and melds mediums to create pieces that are pastiches of what it means to be a woman and a First Nations person in a post-colonial Australia.','12 Marsh Rd , Campbelltown, NSW, 2310','2023-04-11','19:00','00:00',NULL, 3);
+
+

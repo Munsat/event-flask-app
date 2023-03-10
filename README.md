@@ -9,7 +9,7 @@ Public events can be created to help users
 1. Each email address is limited to 1 account and the password has to be verified in 2 steps during signing up for better user experience.
 2. Incorrect values for email or password is tackled with flash msges
 3. Added weather API to check weather if the date is within 15 days.
-
+4. Added a gallery section so host can add photos of the event.
 
 Used SMTPlib, twilio, Nominatim
 weschool for dropdown and search bar
