@@ -69,7 +69,7 @@ def attending_events():
         all_events = [event for event in events if event.date< date.today()]
     else:
         all_events = [event for event in events if event.date>= date.today()]
-        
+
     if session.get('name', 'UNKNOWN') != 'UNKNOWN':
         all_attendances = get_all_attendance_by_userid(session.get('id'))
     return render_template('upcoming_events.html',
@@ -242,27 +242,28 @@ def event_details():
         is_soon = True
         geolocator = Nominatim(user_agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36')
         location = geolocator.geocode(event.location)
-        params = {
-            'latitude': location.latitude,
-            'longitude': location.longitude,
-            'daily': 'weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max',
-            'timezone':'Australia/Sydney',
-            'forecast_days':16,
-        }
-        response = requests.get(url=f'https://api.open-meteo.com/v1/forecast', params=params).json()
-        index = None
-        index =[num for num,each in enumerate(response['daily']['time']) if each == datetime.strftime(event.date, '%Y-%m-%d')][0]
-        weather_code = get_weather_info(response['daily']['weathercode'][index]) 
-        temperature_max = response['daily']['temperature_2m_max'][index]
-        temperature_min = response['daily']['temperature_2m_min'][index]
-        return render_template('event_details.html', 
-            event=event,
-            user_id = session.get('id'),
-            weather_code = weather_code,
-            temperature_max=temperature_max,
-            temperature_min=temperature_min,
-            is_soon=is_soon
-            )
+        if location != None:
+            params = {
+                'latitude': location.latitude,
+                'longitude': location.longitude,
+                'daily': 'weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max',
+                'timezone':'Australia/Sydney',
+                'forecast_days':16,
+            }
+            response = requests.get(url=f'https://api.open-meteo.com/v1/forecast', params=params).json()
+            index = None
+            index =[num for num,each in enumerate(response['daily']['time']) if each == datetime.strftime(event.date, '%Y-%m-%d')][0]
+            weather_code = get_weather_info(response['daily']['weathercode'][index]) 
+            temperature_max = response['daily']['temperature_2m_max'][index]
+            temperature_min = response['daily']['temperature_2m_min'][index]
+            return render_template('event_details.html', 
+                   event=event,
+                   user_id = session.get('id'),
+                   weather_code = weather_code,
+                   temperature_max=temperature_max,
+                   temperature_min=temperature_min,
+                   is_soon=is_soon
+                   )
     return render_template('event_details.html', 
             event=event,
             user_id = session.get('id'))
