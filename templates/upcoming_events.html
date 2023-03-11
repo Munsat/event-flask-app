@@ -12,10 +12,22 @@ Upcoming Events
 
 {% block main %}
 <div class="upcoming-events-container">
-    <div class="search-bar">
-        <label>Search:</label>
-        <input class="search-input" type="text" placeholder="Look up an event..." onkeyup="searchFunc()">
+    <div class='search-and-check-container'>
+        <div class="search-bar">
+            <label>Search:</label>
+            <input class="search-input" type="text" placeholder="Look up an event..." onkeyup="searchFunc()">
+        </div>
+        <form class="past-events-checkbox">
+            <label for="sort-select"> Sort: </label>
+            <select name="past_events" id="sort-select" , onchange="this.form.submit()">
+                <option value="">--Select--</option>
+                <option value="show-past">Show Past Events</option>
+                <option value="show-present">Show Upcoming Events</option>
+            </select>
+        </form>
+            <!-- <input type="checkbox" name="past_events" value="show-past" onchange="this.form.submit()">Show Past Events</p> -->
     </div>
+    
 {% if show_attendance %}
 {% for event in all_events %}
 {% for attendance in all_attendances if all_attendances|length>0 %}

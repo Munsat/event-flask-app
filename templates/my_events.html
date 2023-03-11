@@ -8,9 +8,19 @@ My Events
 
 {% block main %}
 <div class="upcoming-events-container">
-    <div class="search-bar">
-        <label>Search:</label>
-        <input class="search-input" type="text" placeholder="Look up an event..." onkeyup="searchFunc()">
+    <div class='search-and-check-container'>
+        <div class="search-bar">
+            <label>Search:</label>
+            <input class="search-input" type="text" placeholder="Look up an event..." onkeyup="searchFunc()">
+        </div>
+        <form class="past-events-checkbox">
+            <label for="sort-select"> Sort: </label>
+            <select name="past_events" id="sort-select" , onchange="this.form.submit()">
+                <option value="">--Select--</option>
+                <option value="show-past">Show Past Events</option>
+                <option value="show-present">Show Upcoming Events</option>
+            </select>
+        </form>
     </div>
 
 {% for event in all_events %}

@@ -37,7 +37,14 @@ def index():
 
 @app.route('/upcoming_events')
 def upcoming_events():
-    all_events = get_all_events(session.get('email'), session.get('id'))
+    show_past = request.args.get('past_events')
+    events = get_all_events(session.get('email'), session.get('id'))
+
+    if show_past == 'show-past':
+        all_events = [event for event in events if event.date< date.today()]
+    else:
+        all_events = [event for event in events if event.date>= date.today()]   
+
     if session.get('name', 'UNKNOWN') != 'UNKNOWN':
         all_attendances = get_all_attendance_by_userid(session.get('id'))
         return render_template('upcoming_events.html',  
@@ -51,10 +58,18 @@ def upcoming_events():
                            user_id = session.get('id'))
 
 
+# @app.route('/past_events')
+
 
 @app.route ('/attending_events')
 def attending_events():
-    all_events = get_all_events(session.get('email'), session.get('id'))
+    show_past = request.args.get('past_events')
+    events = get_all_events(session.get('email'), session.get('id'))
+    if show_past == 'show-past':
+        all_events = [event for event in events if event.date< date.today()]
+    else:
+        all_events = [event for event in events if event.date>= date.today()]
+        
     if session.get('name', 'UNKNOWN') != 'UNKNOWN':
         all_attendances = get_all_attendance_by_userid(session.get('id'))
     return render_template('upcoming_events.html',
@@ -88,7 +103,7 @@ def cancel_attendance():
 def signup():
     is_duplicate = False
     if request.method == 'POST':
-        name = request.form.get('name').strip().capitalize()
+        name = request.form.get('name').strip().title()
         email = request.form.get('email').lower().strip()
         if request.form.get('password1') == request.form.get('password2'):
             hashed_password = generate_password_hash(request.form.get('password1')) 
@@ -198,8 +213,17 @@ def add_or_edit_event():
 
 @app.route('/my_events')
 def my_events():
+    show_past = request.args.get('past_events')
     if session.get('name', 'UNKNOWN') != 'UNKNOWN':
-        all_events = get_all_my_events(session.get('id',))
+        events = get_all_my_events(session.get('id',))
+        if show_past == 'show-past':
+            all_events = [event for event in events if event.date< date.today()]
+        elif show_past == 'show-present':
+            all_events = [event for event in events if event.date>= date.today()]   
+        else:
+            all_events=events
+
+        
         return render_template('my_events.html',  
                            all_events=all_events,
                            user_name =session.get('name', 'UNKNOWN')
@@ -214,7 +238,7 @@ def event_details():
     id = request.args.get('id')
     event = get_event_by_id(id)
     date_diff = (event.date - date.today()).days
-    if date_diff < 15:
+    if date_diff < 15 and event.date>date.today():
         is_soon = True
         geolocator = Nominatim(user_agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36')
         location = geolocator.geocode(event.location)

@@ -349,6 +349,10 @@ margin-left: 1.2rem;
 .gallery{
     max-width: 90%;
 }
+.gallery h1{
+    margin-bottom: 1rem;
+    font-size: 3rem;
+}
 
 .image-holder{
     display: flex;
@@ -364,3 +368,24 @@ margin-left: 1.2rem;
 .detail-btn-holder{
     margin: auto;
 }
+
+.past-events-checkbox{
+    text-align: left;
+    margin: auto 4rem auto auto;
+}
+
+.search-and-check-container{
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
+footer{
+    background-color: #291f31;
+    color: white;
+    padding: .5rem;
+    font-size: .7rem;
+    margin-top: 2rem;
+}
+/* @media (max-width: 35em) {   
+
+  } */
