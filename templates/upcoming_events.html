@@ -41,8 +41,8 @@ Upcoming Events
     </div>
     <!-- <p>{{event.description}}</p> -->
     <div>
-        <a href="/event_details?id={{event.id}}"><button>See Event Details</button></a>
-        <a href="/cancel_attendance?id={{event.id}}"><button>Cancel Attendance</button></a>
+        <a href="/event_details?id={{event.id}}"><button class="btn-style">See Event Details</button></a>
+        <a href="/cancel_attendance?id={{event.id}}"><button class="btn-style">Cancel Attendance</button></a>
     </div>  
   </div>
 {% endif %}
@@ -60,7 +60,7 @@ Upcoming Events
     </div>
     <div>
         {% if user_name == 'UNKNOWN': %}
-        <a href="/signup"><button>Attend</button></a>
+        <a href="/signup"><button class="btn-style">Attend</button></a>
         {% else %}
         {% if event.user_id != user_id %}
         {% for attendance in all_attendances if all_attendances|length>0 %}
@@ -69,13 +69,13 @@ Upcoming Events
         {% endif %}
         {% endfor %}
         {% if ns.is_attending == True %}
-        <button disabled>Attending</button>
+        <button class="btn-style" disabled>Attending</button>
         {% else %}
-        <a href="/attend_event_action?id={{event.id}}"><button>Attend</button></a>
+        <a href="/attend_event_action?id={{event.id}}"><button class="btn-style">Attend</button></a>
         {% endif %}            
         {% endif %}
         {% endif %}
-        <a href="/event_details?id={{event.id}}"><button>See Event Details</button></a>
+        <a href="/event_details?id={{event.id}}"><button class="btn-style">See Event Details</button></a>
     
     </div>  
   </div>

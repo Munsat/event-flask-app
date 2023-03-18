@@ -32,18 +32,18 @@ Event Details
 </ul>
 <div class="detail-btn-holder">
   {% if event.user_id == user_id %}
-  <a href="/add_or_edit_event?id={{event.id}}"><button>Edit</button></a>
-  <a href="/delete_event?id={{event.id}}" onclick="return confirmDelete()"><button>Delete</button></a>
+  <a href="/add_or_edit_event?id={{event.id}}"><button class="btn-style">Edit</button></a>
+  <a href="/delete_event?id={{event.id}}" onclick="return confirmDelete()"><button class="btn-style">Delete</button></a>
   {% endif %}
-  <a href="/gallery?id={{event.id}}"><button>Gallery</button></a>
+  <a href="/gallery?id={{event.id}}"><button class="btn-style" >Gallery</button></a>
   {% if event.user_id == user_id %}
-  <button class="add-photos" onclick="toggleFormDisplay()">Add Photos</button>
+  <button class="btn-style" class="add-photos" onclick="toggleFormDisplay()">Add Photos</button>
   <form class="add-photos-form" action="/upload_photo" method="POST" enctype="multipart/form-data">
     <div>
         <label for="images">Add images</label>
         <input type="file" name="images" id="images" multiple required/>
         <input type="hidden" name="event_id" value="{{event.id}}"/>
-        <button type="submit">Submit</button>
+        <button class="btn-style" type="submit">Submit</button>
     </div>
     {% endif %}
 </form>

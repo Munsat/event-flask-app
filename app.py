@@ -58,8 +58,6 @@ def upcoming_events():
                            user_id = session.get('id'))
 
 
-# @app.route('/past_events')
-
 
 @app.route ('/attending_events')
 def attending_events():
@@ -99,39 +97,46 @@ def cancel_attendance():
     
 
 
-@app.route('/signup', methods=['POST', 'GET'])
+@app.get('/signup')
 def signup():
-    is_duplicate = False
-    if request.method == 'POST':
-        name = request.form.get('name').strip().title()
-        email = request.form.get('email').lower().strip()
-        if request.form.get('password1') == request.form.get('password2'):
-            hashed_password = generate_password_hash(request.form.get('password1')) 
-            all_emails = get_all_user_emails()
-            for each_email in all_emails:
-                if email == each_email['email']:
-                    is_duplicate =True
-            if not is_duplicate:
-                user_id = insert_user(name, email, hashed_password)
-                session['email'] = email
-                session['id'] = user_id
-                session['name'] = name
-                flash('You were successfully logged in')
-                return redirect('/')
-            else:
-                flash('Sorry, this email is already registered with us. Try logging in.')
-                return redirect('/login')   
-        else:
-            flash('Sorry your passwords do not match. Please try again.')
-            return redirect('/signup') 
     return render_template('signup.html', 
                            user_name =session.get('name', 'UNKNOWN'))
 
+@app.post('/signup')
+def signup_action():
+    is_duplicate = False
+    name = request.form.get('name').strip().title()
+    email = request.form.get('email').lower().strip()
+    if request.form.get('password1') == request.form.get('password2'):
+        hashed_password = generate_password_hash(request.form.get('password1')) 
+        all_emails = get_all_user_emails()
+        for each_email in all_emails:
+            if email == each_email['email']:
+                is_duplicate =True
+        if not is_duplicate:
+            user_id = insert_user(name, email, hashed_password)
+            session['email'] = email
+            session['id'] = user_id
+            session['name'] = name
+            flash('You were successfully logged in')
+            return redirect('/')
+        else:
+            flash('Sorry, this email is already registered with us. Try logging in.')
+            return redirect('/login')   
+    else:
+        flash('Sorry your passwords do not match. Please try again.')
+        return redirect('/signup') 
 
 
 
-@app.route('/login', methods=['POST', 'GET'])
+
+@app.get('/login')
 def login():
+    return render_template ('login.html', 
+                            user_name =session.get('name', 'UNKNOWN'))
+
+@app.post('/login')
+def login_action():
     if request.method == 'POST':
         email = request.form.get('email').lower()
         password = request.form.get('password')
@@ -145,10 +150,6 @@ def login():
         else:
             flash('Your email or password was incorrect. Please try again.')
             return redirect('/login')
-        
-    return render_template ('login.html', 
-                            user_name =session.get('name', 'UNKNOWN'))
-
 
 
 @app.route('/logout')
@@ -171,43 +172,44 @@ def delete_acc():
 
 
 
-@app.route('/add_or_edit_event', methods=['GET', 'POST'])
+@app.get('/add_or_edit_event')
 def add_or_edit_event():
     id = request.args.get('id')
-    if request.method == 'POST':
-        event_name = request.form.get('name')
-        type = request.form.get('type')
-        description = request.form.get('description')
-        location = request.form.get('location').capitalize()
-        date = request.form.get('date')
-        start_time = request.form.get('start-time')
-        end_time = request.form.get('end-time')
-        user_id = session.get('id')
-        type = request.form.get('type')
-        email_list = request.form.get('emails').lower().split(',')
-        parsed_email_list = [email.strip() for email in email_list]
-
-        if id == None:
-            id = insert_event(event_name, type, description, location,date,start_time,end_time,parsed_email_list,user_id )
-            flash(f'A new {type.lower()} event has been created.')
-        else:
-            id = update_event(event_name, type, description, location,date,start_time,end_time,parsed_email_list,user_id,id )
-            flash(f'{event_name} event has been updated.')
-        if email_list != ['']:    
-            event = get_event_by_id(id)
-            event.send_email(session.get('name'))
-            flash('Emails have been sent to the invitees.')
-        return redirect ('/')
-
-
+    if id == None:
+        return render_template('create_event.html', event =[])
     else:
-        if id == None:
-            return render_template('create_event.html', event =[])
-        else:
-            event = get_event_by_id(id)
-            start_time = datetime.strptime(event.start_time, '%I:%M %p').strftime('%H:%M') 
-            end_time = datetime.strptime(event.end_time, '%I:%M %p').strftime('%H:%M')
-            return render_template('create_event.html', event=event, start_time=start_time, end_time=end_time)
+        event = get_event_by_id(id)
+        start_time = datetime.strptime(event.start_time, '%I:%M %p').strftime('%H:%M') 
+        end_time = datetime.strptime(event.end_time, '%I:%M %p').strftime('%H:%M')
+        return render_template('create_event.html', event=event, start_time=start_time, end_time=end_time)
+
+
+
+@app.post('/add_or_edit_event')
+def add_or_edit_event_action():
+    id = request.args.get('id')
+    event_name = request.form.get('name')
+    type = request.form.get('type')
+    description = request.form.get('description')
+    location = request.form.get('location').capitalize()
+    date = request.form.get('date')
+    start_time = request.form.get('start-time')
+    end_time = request.form.get('end-time')
+    user_id = session.get('id')
+    type = request.form.get('type')
+    email_list = request.form.get('emails').lower().split(',')
+    parsed_email_list = [email.strip() for email in email_list]
+    if id == None:
+        id = insert_event(event_name, type, description, location,date,start_time,end_time,parsed_email_list,user_id )
+        flash(f'A new {type.lower()} event has been created.')
+    else:
+        id = update_event(event_name, type, description, location,date,start_time,end_time,parsed_email_list,user_id,id )
+        flash(f'{event_name} event has been updated.')
+    if email_list != ['']:    
+        event = get_event_by_id(id)
+        event.send_email(session.get('name'))
+        flash('Emails have been sent to the invitees.')
+    return redirect ('/')
 
 
 
@@ -291,19 +293,22 @@ def gallery():
 
 
 
-@app.route('/upload_photo', methods=['GET', 'POST'])
+@app.get('/upload_photo')
 def upload_photo():
-    if request.method == 'POST':
-        images = request.files.getlist('images')
-        event_id = request.form.get('event_id')
-        
-        for image in images:
-            image_rows = []
-            uploaded_image = cloudinary.uploader.upload(image)
-            image_rows.append([uploaded_image['public_id'], uploaded_image['secure_url'], event_id])
-            insert_image(image_rows)
-        return redirect('/upcoming_events')
     return redirect('/gallery')
+
+
+@app.post('/upload_photo')
+def upload_photo_action():
+    images = request.files.getlist('images')
+    event_id = request.form.get('event_id')
+    
+    for image in images:
+        image_rows = []
+        uploaded_image = cloudinary.uploader.upload(image)
+        image_rows.append([uploaded_image['public_id'], uploaded_image['secure_url'], event_id])
+        insert_image(image_rows)
+    return redirect('/upcoming_events')
 
 
 

@@ -38,3 +38,18 @@ function toggleFormDisplay() {
     function confirmDelete(e){
       return confirm('Are you sure you want to delete?')
     }
+
+    // Nav toggle
+    function navToggle() {
+      const primaryNav = document.querySelector('.primary-nav');
+      const hamburgerIcon = document.querySelector('.mobile-nav-toggle')
+      const visibility = primaryNav.getAttribute('data-visible') 
+      if (visibility==='false'){
+        primaryNav.setAttribute('data-visible', true)
+        hamburgerIcon.setAttribute('data-icon-open', true)
+      }else{
+        primaryNav.setAttribute('data-visible', false)
+        hamburgerIcon.setAttribute('data-icon-open', false)
+      }
+    }
+    

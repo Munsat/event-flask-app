@@ -14,8 +14,10 @@
         <div class="logo">
             <h2 onclick="location.href='/'">EEvent</h2>
         </div>
+        <button class="mobile-nav-toggle"  onclick="navToggle()" aria-controls="primary-nav" data-icon-open="false
+    "></button>
         <nav>
-            <ul class="primary-nav">
+            <ul id="primary-nav" class="primary-nav" data-visible="false">
                 <li><a class='nav-bar' href="/">home</a></li>
                 <li><a class='nav-bar' href="/upcoming_events">events</a></li>
                 {% if user_name != 'UNKNOWN': %}
