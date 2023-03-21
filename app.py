@@ -14,16 +14,9 @@ from cloudinary import CloudinaryImage
 import cloudinary.uploader
 
 
-# # Upload
-# upload("https://upload.wikimedia.org/wikipedia/commons/a/ae/Olympic_flag.jpg", public_id="olympic_flag")
-
-# # Transform
-# url, options = cloudinary_url("olympic_flag", width=100, height=150, crop="fill")
-
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
-
 
 
 @app.route('/')
@@ -314,6 +307,6 @@ def upload_photo_action():
 
 
 if __name__ == '__main__':
-    app.run(debug = True) 
+    app.run(host='localhost', port='8080', debug = True) 
 
 

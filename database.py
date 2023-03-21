@@ -1,8 +1,11 @@
 import psycopg2
 from psycopg2.extras import RealDictCursor, execute_values
+import os
+# from urllib.parse import urlparse
+
 
 def sql_select_all(query):
-    db_connection = psycopg2.connect('dbname=event_planner')
+    db_connection = psycopg2.connect(os.environ.get('DATABASE_URL'))
     db_cursor = db_connection.cursor(cursor_factory=RealDictCursor)
     db_cursor.execute(query)
     result = db_cursor.fetchall()
@@ -11,7 +14,7 @@ def sql_select_all(query):
     return result
 
 def sql_select_all_by_col(query, params):
-    db_connection = psycopg2.connect('dbname=event_planner')
+    db_connection = psycopg2.connect(os.environ.get('DATABASE_URL'))
     db_cursor = db_connection.cursor(cursor_factory=RealDictCursor)
     db_cursor.execute(query, params)
     result = db_cursor.fetchall()
@@ -21,7 +24,7 @@ def sql_select_all_by_col(query, params):
 
 
 def sql_select_one(query, params):
-    db_connection = psycopg2.connect('dbname=event_planner')
+    db_connection = psycopg2.connect(os.environ.get('DATABASE_URL'))
     db_cursor = db_connection.cursor(cursor_factory=RealDictCursor)
     db_cursor.execute(query, params)
     result = db_cursor.fetchone()
@@ -31,7 +34,7 @@ def sql_select_one(query, params):
 
 
 def sql_write(query, params):
-    db_connection = psycopg2.connect('dbname=event_planner')
+    db_connection = psycopg2.connect(os.environ.get('DATABASE_URL'))
     db_cursor = db_connection.cursor()
     db_cursor.execute(query, params)
     db_connection.commit()
@@ -40,7 +43,7 @@ def sql_write(query, params):
 
 
 def sql_write_with_return(query, params):
-    db_connection = psycopg2.connect('dbname=event_planner')
+    db_connection = psycopg2.connect(os.environ.get('DATABASE_URL'))
     db_cursor = db_connection.cursor()
     db_cursor.execute(query, params)
     db_connection.commit()
@@ -51,7 +54,7 @@ def sql_write_with_return(query, params):
 
 
 def sql_delete(query, params):
-    db_connection = psycopg2.connect('dbname=event_planner')
+    db_connection = psycopg2.connect(os.environ.get('DATABASE_URL'))
     db_cursor = db_connection.cursor()
     db_cursor.execute(query, params)
     db_connection.commit()
@@ -60,7 +63,7 @@ def sql_delete(query, params):
 
 
 def sql_multiple_write(query, params):
-    db_connection = psycopg2.connect('dbname=event_planner')
+    db_connection = psycopg2.connect(os.environ.get('DATABASE_URL'))
     db_cursor = db_connection.cursor(cursor_factory=RealDictCursor)
     execute_values(db_cursor, query, params)
     db_connection.commit()
