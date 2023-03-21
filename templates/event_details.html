@@ -37,7 +37,7 @@ Event Details
   {% endif %}
   <a href="/gallery?id={{event.id}}"><button class="btn-style" >Gallery</button></a>
   {% if event.user_id == user_id %}
-  <button class="btn-style" class="add-photos" onclick="toggleFormDisplay()">Add Photos</button>
+  <a><button class="btn-style" class="add-photos" onclick="toggleFormDisplay()">Add Photos</button></a>
   <form class="add-photos-form" action="/upload_photo" method="POST" enctype="multipart/form-data">
     <div>
         <label for="images">Add images</label>
