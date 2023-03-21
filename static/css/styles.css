@@ -82,16 +82,15 @@ header{
 
 
 .nav-bar{
-    padding: 1rem;
+    padding: .9rem;
     font-family: 'Major Mono Display', monospace;
-    font-size: clamp(2rem 6vh 5rem);
+    font-size: clamp(.9rem, 1.5vw, 1rem);
     color: rgb(0, 0, 0);
     /* transition: all 250ms ease-in-out; */
     
 }
 .nav-bar:hover {
     border-bottom:4px solid #8766a1;
-    color: white;    
 }
 
 .logo{
@@ -116,7 +115,7 @@ header{
     display: block;
     color: #ffffff;
     text-align: left;
-    transition: all 250ms ease-in-out;
+    transition: background-color 250ms ease-in-out;
 }
 
 .my-acc{
@@ -128,7 +127,7 @@ header{
 }
 
 .dropdown-content a:hover{
-    background-color: #5a3874;
+    background-color:  #8766a1;
 }
 
 .dropdown:hover .dropdown-content{
@@ -137,67 +136,7 @@ header{
 
 
 
-@media (max-width: 55em) {   
 
-    @supports(backdrop-filter: blur(2rem)){
-        .primary-nav{
-                background-color: #dca0f20f;
-                backdrop-filter: blur(2rem);
-        }
-    }
-
-    .primary-nav{
-        flex-direction: column;
-        gap: 2rem;
-        
-        position: fixed;
-        inset: 0 0 0 40%;
-        padding: 6rem 2rem;
-        text-align: left;
-        z-index: 100;
-        background-color: #5144552f;
-        transform: translate(100%);
-        transition: all 250ms ease-in-out;
-    }
-
-    .primary-nav[data-visible = 'true']{
-        transform: translate(0%);
-    }
-    .nav-bar{
-        color: #ffffff;
-    }
-
-    .mobile-nav-toggle{
-        display: block;
-        z-index: 200;
-        position: absolute;
-        right: 2rem;
-        top: 1.5rem;
-        background: transparent;
-        background-image: url("/static/icons/hamburger-32x32.png");
-        background-repeat: no-repeat;
-        background-position: center;
-        width: 2rem;
-        aspect-ratio: 1;
-        border: 0;
-    }
-    
-    .mobile-nav-toggle[data-icon-open = 'true']{
-        background-image: url("/static/icons/favicon-32x32.svg");
-    }
-
-    .dropdown-content{
-        display: block;
-        position: relative;
-        background-color: transparent;
-        font-size: .9rem;
-        
-    }
-
-    .dropdown-content a:hover{
-        background-color: none;
-    }
-}
 
 
 
@@ -265,7 +204,6 @@ header{
     width: 32%;
     height: 10rem;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     cursor: pointer;
@@ -286,11 +224,16 @@ header{
 }
 
 .upcoming-events{
-    margin: 1rem 3rem;
+    margin: 1rem auto;
+    width: 70%;
     padding: 3rem;
     display: grid;
     grid-template-columns: 50% 50%;
     place-items: center;
+}
+
+.upcoming-events button{
+    margin: .5rem;
 }
 
 .btn-style :hover :not([disabled]){
@@ -313,15 +256,15 @@ button :disabled {
 }
 
 .form{
-    padding: 3rem 1rem ;
-    max-width: 45%;
+    padding: 3rem;
+    width: clamp(min(90vw, 35rem), 50%, max(90vw, 55rem));
     margin: 5rem auto;
     
 }
 
-.form div{
-    max-width: 30rem;
-}
+/* .form div{
+    max-width: 90%;
+} */
 
 div>label, div>input, div>textarea{
     display:block;
@@ -452,4 +395,92 @@ footer{
     padding: .5rem;
     font-size: .7rem;
     margin-top: 2rem;
+}
+
+
+@media (max-width: 55em) {   
+
+    @supports(backdrop-filter: blur(2rem)){
+        .primary-nav{
+                background-color: #dca0f20f;
+                backdrop-filter: blur(2rem);
+        }
+    }
+
+    .primary-nav{
+        flex-direction: column;
+        gap: 2rem;
+        position: fixed;
+        inset: 0 0 0 40%;
+        padding: 6rem 2rem;
+        text-align: left;
+        z-index: 100;
+        background-color: #5144552f;
+        transform: translate(100%);
+        transition: all 250ms ease-in-out;
+    }
+
+    .primary-nav[data-visible = 'true']{
+        transform: translate(0%);
+    }
+    .nav-bar{
+        color: #ffffff;
+    }
+
+    .mobile-nav-toggle{
+        display: block;
+        z-index: 200;
+        position: absolute;
+        right: 2rem;
+        top: 1.5rem;
+        background: transparent;
+        background-image: url("/static/icons/hamburger-32x32.png");
+        background-repeat: no-repeat;
+        background-position: center;
+        width: 2rem;
+        aspect-ratio: 1;
+        border: 0;
+        cursor: pointer;
+    }
+    
+    .mobile-nav-toggle[data-icon-open = 'true']{
+        background-image: url("/static/icons/favicon-32x32.svg");
+        cursor: pointer;
+    }
+
+    .dropdown-content{
+        display: block;
+        position: relative;
+        background-color: transparent;
+        font-size: .9rem;
+        
+    }
+
+    .dropdown-content a:hover{
+        background-color: transparent;
+        border-bottom:4px solid #8766a1;
+        width: fit-content;
+    }
+
+    .home-events-container{
+        display: flex;
+        flex-direction: column;
+        margin: 0 1rem;
+    }
+   
+    .home-events{
+        width: 90%;
+    }
+    
+    .upcoming-events{
+        display: block;
+        line-height: 2rem;
+        font-size: 0.9rem;
+    }
+   
+    .event-details p, .event-details> ul, .event-details>li{
+        padding: 0 1rem;
+        font-size: .9rem;
+    }
+    
 }
