@@ -263,9 +263,8 @@ header{
 
 .form{
     padding: 3rem;
-    width: clamp(min(25rem), 70%, max(90vw, 50rem));
+    width: clamp(min(25rem), 70%, max( 40rem));
     margin: 5rem auto;
-    
 }
 
 
@@ -393,6 +392,21 @@ footer{
     margin-top: 2rem;
 }
 
+
+.loader{
+    margin: auto;
+    width: 3rem;
+    aspect-ratio: 1;
+    border: 20px solid #EAF0F6;
+    border-radius: 50%;
+    border-top: 20px solid #57355e;
+    animation: spinner 3s ease-in-out infinite;
+}
+
+@keyframes spinner {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
 
 @media (max-width: 55em) {   
     body{

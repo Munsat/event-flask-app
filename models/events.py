@@ -2,7 +2,9 @@ from database import sql_select_all, sql_select_all_by_col,sql_select_one, sql_d
 from datetime import datetime
 import smtplib
 import os
-
+import asyncio
+from email.message import EmailMessage
+import aiosmtplib
 
 my_email = os.environ.get('MY_EMAIL')
 my_pass = os.environ.get('MY_PASS')
@@ -22,17 +24,29 @@ class Event:
         self.user_id = user_id
         self.user_name = None
 
-    def send_email(self, user_name):
+    async def send_email(self, user_name):
         parsed_date = self.date.strftime("%d %B, %Y")
-
-        connection = smtplib.SMTP("smtp.gmail.com")
-        connection.starttls()
-        connection.login(user=my_email, password=my_pass)
-        for email in self.email_list:
-             connection.sendmail(from_addr=my_email,
-                                to_addrs=email, 
-                                msg=f"Subject: Invitation to {self.name}\n\nHi,\n\nYou are cordially invited to attend {self.name}, that we have planned for {parsed_date}. It will be wonderful to have you among us!\nLocation: {self.location}.\nDate and Time: {self.date}, from {self.start_time} to {self.end_time} \n\nKind Regards,\n{user_name}")
-        connection.close()    
+        message = EmailMessage()
+        message['From'] = my_email
+        message['To'] = self.email_list
+        message["Subject"] = f"Invitation to {self.name}"
+        message.set_content(f"Hi,\n\nYou are cordially invited to attend {self.name}, that we have planned for {parsed_date}. It will be wonderful to have you among us!\nLocation: {self.location}.\nDate and Time: {self.date}, from {self.start_time} to {self.end_time} \n\nKind Regards,\n{user_name}")
+        await aiosmtplib.send(message, 
+                              hostname="smtp.gmail.com", 
+                              port=465, 
+                              use_tls=True,
+                              username=my_email,
+                              password=my_pass)
+   
+    # def send_email(self, user_name):
+        # connection = smtplib.SMTP("smtp.gmail.com", 587)
+        # connection.starttls()
+        # connection.login(user=my_email, password=my_pass)
+        # for email in self.email_list:
+        #      connection.sendmail(from_addr=my_email,
+        #                         to_addrs=email, 
+        #                         msg=f"Subject: Invitation to {self.name}\n\nHi,\n\nYou are cordially invited to attend {self.name}, that we have planned for {parsed_date}. It will be wonderful to have you among us!\nLocation: {self.location}.\nDate and Time: {self.date}, from {self.start_time} to {self.end_time} \n\nKind Regards,\n{user_name}")
+        # connection.close()    
 
 
 def get_all_events(user_email, user_id):

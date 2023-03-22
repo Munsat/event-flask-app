@@ -12,6 +12,8 @@ from weather_code import get_weather_info
 from datetime import datetime, date
 from cloudinary import CloudinaryImage
 import cloudinary.uploader
+import asyncio
+
 
 
 
@@ -198,9 +200,11 @@ def add_or_edit_event_action():
     else:
         id = update_event(event_name, type, description, location,date,start_time,end_time,parsed_email_list,user_id,id )
         flash(f'{event_name} event has been updated.')
+        
     if email_list != ['']:    
         event = get_event_by_id(id)
-        event.send_email(session.get('name'))
+        asyncio.run(event.send_email(session.get('name')))
+        # event.send_email(session.get('name'))
         flash('Emails have been sent to the invitees.')
     return redirect ('/')
 
