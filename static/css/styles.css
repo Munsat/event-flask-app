@@ -38,7 +38,7 @@ body {
     font-family: 'Comfortaa', cursive;
     line-height: 1.5;
     min-height: 100vh;
-    
+    color: #1b1321;
     display: grid;
     grid-template-rows: min-content 1fr;
     overflow-x: hidden;
@@ -63,7 +63,7 @@ select {
 
 
 li,a{
-    text-decoration: none;
+    text-decoration:none !important;
     list-style-type: none;
     color: #ffffff;
 }
