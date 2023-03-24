@@ -10,6 +10,9 @@
     <title>Eevent -{% block heading %} {% endblock heading %}</title>
 </head>
 <body>
+    <div class="loader-container">
+        <div class="loader"></div>
+    </div>
     <header>
         <div class="logo">
             <h2 onclick="location.href='/'">EEvent</h2>
@@ -53,7 +56,6 @@
         {% endwith %}
         {% block main %}
         {% endblock main %}
-        <div class="loader"></div>
     </main>
 </body>
 <footer>
