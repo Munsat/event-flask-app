@@ -14,8 +14,7 @@
         <div class="logo">
             <h2 onclick="location.href='/'">EEvent</h2>
         </div>
-        <button class="mobile-nav-toggle"  onclick="navToggle()" aria-controls="primary-nav" data-icon-open="false
-    "></button>
+        <button class="mobile-nav-toggle"  onclick="navToggle()" aria-controls="primary-nav" data-icon-open="false"></button>
         <nav>
             <ul id="primary-nav" class="primary-nav" data-visible="false">
                 <li><a class='nav-bar' href="/">home</a></li>
@@ -54,6 +53,7 @@
         {% endwith %}
         {% block main %}
         {% endblock main %}
+        <div class="loader"></div>
     </main>
 </body>
 <footer>
