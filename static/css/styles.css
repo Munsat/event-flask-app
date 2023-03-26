@@ -43,6 +43,7 @@ body {
     grid-template-rows: min-content 1fr;
     overflow-x: hidden;
     text-align: center;
+    overflow-x: hidden
 }
 
 
@@ -186,7 +187,7 @@ header{
 }
 .home-text>h1{
     color: #e9d9f2;
-    font-size: clamp(3rem, 4vw, 7rem);
+    font-size: clamp(2.4rem, 4vw, 7rem);
     font-weight: 500;
 }
 
@@ -217,9 +218,9 @@ header{
     margin: 0 1rem;
 }
 
-.upcoming-events-container{
+/* .upcoming-events-container{
     margin: 0 1rem;
-}
+} */
 
 .upcoming-events{
     margin: 1rem auto;
@@ -263,7 +264,7 @@ header{
 
 .form{
     padding: 3rem;
-    width: clamp(min(25rem), 70%, max( 40rem));
+    width: clamp(min(22rem), 70%, max( 40rem));
     margin: 5rem auto;
 }
 
@@ -306,7 +307,9 @@ form>*{
     
 }
 
-
+#sort-select{
+    max-width: 5rem;
+}
 
 .radio-container>*{
     text-align: left;
@@ -398,7 +401,7 @@ footer{
     display: flex;
     justify-content: center;
     align-items: center;
-    position: absolute;
+    position: fixed;
     background: #00000017;
     z-index: 1;
 }
@@ -517,6 +520,11 @@ footer{
     .event-details p, .event-details> ul, .event-details>li{
         padding: 0 1rem;
         font-size: .9rem;
+    }
+
+    .btn-style{
+        padding: .6rem 1rem;
+
     }
 
 }
